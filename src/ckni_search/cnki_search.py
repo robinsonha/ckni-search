@@ -1,8 +1,7 @@
 from pprint import pprint
-from .config import CNKI_WRAPPERS, PATHWAYS, CNKI_MAX_PAGES, CNKI_TIMEOUT_SECONDS
+from .config import CNKI_WRAPPERS, PATHWAYS, CNKI_MAX_PAGES
 
 def generate_cnki_queries(phytochemicals, pathways=PATHWAYS, start_date=None, end_date=None):
-    """Generate CNKI search queries for each drug and all pathways."""
     queries = []
     for phytochem in phytochemicals:
         for pathway in pathways:
@@ -20,11 +19,9 @@ def generate_cnki_queries(phytochemicals, pathways=PATHWAYS, start_date=None, en
     return queries
 
 def search_cnki_for_queries(queries, max_pages=CNKI_MAX_PAGES):
-    """Search CNKI for each query using MagicCNKI."""
     from MagicCNKI import MagicCNKI
     mc = MagicCNKI()
     all_results = []
-
     for query_info in queries:
         try:
             results = list(mc.search(query=query_info['query'], start=max_pages))
@@ -43,4 +40,3 @@ def search_cnki_for_queries(queries, max_pages=CNKI_MAX_PAGES):
             print(f"Error searching CNKI: {e}")
             continue
     return all_results
-
