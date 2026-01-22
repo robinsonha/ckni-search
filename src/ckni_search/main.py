@@ -18,22 +18,18 @@ def main():
         "--drugs", type=str, nargs="+", required=True,
         help="List of drug/phytochemical names in English"
     )
-
     args = parser.parse_args()
     start_date = args.start_date
     end_date = args.end_date
     drug_list = args.drugs
 
-    # Translate drugs
     translator = PhytochemicalTranslator()
     phytochemicals_data = translator.process_list(drug_list)
 
-    # Save translations
     with open(OUTPUT_TRANSLATIONS_FILE, "w", encoding="utf-8") as f:
         json.dump(phytochemicals_data, f, ensure_ascii=False, indent=2)
     print(f"Saved translated phytochemicals to {OUTPUT_TRANSLATIONS_FILE}")
 
-    # Generate CNKI queries
     queries = generate_cnki_queries(
         phytochemicals=phytochemicals_data,
         pathways=PATHWAYS,
@@ -42,14 +38,11 @@ def main():
     )
     print(f"Generated {len(queries)} queries for {len(phytochemicals_data)} drugs across {len(PATHWAYS)} pathways")
 
-    # Execute CNKI search
     search_results = search_cnki_for_queries(queries)
 
-    # Save CNKI search results
     with open(OUTPUT_RESULTS_FILE, "w", encoding="utf-8") as f:
         json.dump(search_results, f, ensure_ascii=False, indent=2)
     print(f"Saved search results to {OUTPUT_RESULTS_FILE}")
-
 
 if __name__ == "__main__":
     main()
