@@ -7,8 +7,7 @@ pip install httpx beautifulsoup4 pydantic
 ```
 **Example usage**
 ```
-from cnki_client import CNKISearch
-
+from phytocnki import run_pipeline
 cnki = CNKISearch()
 papers = cnki.search("人工智能")
 ```
