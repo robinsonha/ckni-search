@@ -10,3 +10,6 @@ pip install httpx beautifulsoup4 pydantic
 ```
 python -m ckni_search.main --start_date 2020-01-01 --end_date 2023-12-31
 ```
+--end_date is optional; defaults to today.
+
+--All default paths and constants are in config.py.
