@@ -1,22 +1,24 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=65.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "phytocnki"
+name = "ckni-search"
 version = "0.1.0"
-description = "Phytochemical pathway mining from CNKI with translation support"
+description = "CNKI search pipeline for phytochemicals with translation support"
 authors = [
-    { name="Your Team", email="your@email.com" }
+    {name = "Your Name", email = "your.email@example.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.9"
-
-dependencies = [
-    "requests",
-    "pandas",
-    "googletrans==4.0.0-rc1"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
 ]
-
-[tool.setuptools.packages.find]
-where = ["src"]
+dependencies = [
+    "googletrans==4.0.0-rc1",
+    "pandas>=1.5",
+    "requests>=2.28"
+]
