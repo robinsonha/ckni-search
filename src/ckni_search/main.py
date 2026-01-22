@@ -1,19 +1,18 @@
 import argparse
 import json
-from pathlib import Path
-from .config import OUTPUT_TRANSLATIONS_FILE, OUTPUT_RESULTS_FILE, PATHWAYS
+from .config import OUTPUT_TRANSLATIONS_FILE, OUTPUT_RESULTS_FILE, PATHWAYS, START_DATE, END_DATE
 from .translator import PhytochemicalTranslator
 from .cnki_search import generate_cnki_queries, search_cnki_for_queries
 
 def main():
     parser = argparse.ArgumentParser(description="Run ckni_search pipeline")
     parser.add_argument(
-        "--start_date", type=str, required=True,
+        "--start_date", type=str, default=START_DATE,
         help="Start date for CNKI search (YYYY-MM-DD)"
     )
     parser.add_argument(
-        "--end_date", type=str, default=None,
-        help="End date for CNKI search (YYYY-MM-DD). Defaults to today if omitted."
+        "--end_date", type=str, default=END_DATE,
+        help="End date for CNKI search (YYYY-MM-DD). Default is None (up to today)."
     )
     parser.add_argument(
         "--drugs", type=str, nargs="+", required=True,
@@ -21,21 +20,20 @@ def main():
     )
 
     args = parser.parse_args()
-
     start_date = args.start_date
     end_date = args.end_date
     drug_list = args.drugs
 
-    # Translate drugs to Chinese
+    # Translate drugs
     translator = PhytochemicalTranslator()
     phytochemicals_data = translator.process_list(drug_list)
 
-    # Save translations to JSON (optional)
+    # Save translations
     with open(OUTPUT_TRANSLATIONS_FILE, "w", encoding="utf-8") as f:
         json.dump(phytochemicals_data, f, ensure_ascii=False, indent=2)
     print(f"Saved translated phytochemicals to {OUTPUT_TRANSLATIONS_FILE}")
 
-    # Generate CNKI queries using ALL pathways
+    # Generate CNKI queries
     queries = generate_cnki_queries(
         phytochemicals=phytochemicals_data,
         pathways=PATHWAYS,
@@ -44,10 +42,10 @@ def main():
     )
     print(f"Generated {len(queries)} queries for {len(phytochemicals_data)} drugs across {len(PATHWAYS)} pathways")
 
-    # Execute CNKI searches
+    # Execute CNKI search
     search_results = search_cnki_for_queries(queries)
 
-    # Save results
+    # Save CNKI search results
     with open(OUTPUT_RESULTS_FILE, "w", encoding="utf-8") as f:
         json.dump(search_results, f, ensure_ascii=False, indent=2)
     print(f"Saved search results to {OUTPUT_RESULTS_FILE}")
