@@ -52,15 +52,30 @@ class PhytochemicalTranslator:
 
     def process_list(self, phytochemicals: List[str]) -> List[Dict]:
         results = []
-        for phytochem in phytochemicals:
+        
+        print(f"Processing {len(phytochemicals)} phytochemicals...")
+        print("=" * 60)
+
+        for i, phytochem in enumerate(phytochemicals, 1):
             clean_name = self.clean_name(phytochem)
             chinese_name = self.translate_to_chinese(phytochem)
-            if chinese_name == self.failure_token and clean_name != phytochem:
+            aliases = self.get_aliases(clean_name)
+
+            if not chinese_name and clean_name != phytochem.lower():
                 chinese_name = self.translate_to_chinese(clean_name)
-            results.append({
+
+            result = {
                 "name": clean_name,
-                "chinese": chinese_name or self.failure_token,
-                "original_name": phytochem,
-                "aliases": []
-            })
+                "chinese": chinese_name or "TRANSLATION_FAILED",
+                "aliases": aliases,
+                "original_name": phytochem
+            }
+            results.append(result)
+
+            print(f"[{i}/{len(phytochemicals)}] {phytochem} -> {chinese_name or 'FAILED'}")
+            if i < len(phytochemicals):
+                time.sleep(0.5)  # rate limiting
+
+        print("=" * 60)
+        print(f"Processing complete! {len([r for r in results if r['chinese'] != 'TRANSLATION_FAILED'])}/{len(results)} successfully translated.")
         return results
