@@ -1,9 +1,11 @@
 # Default configuration and constants for ckni_search
 
+# Date settings
 START_DATE = "2015-01-01"
 END_DATE = None  # None = up to today
 ENABLE_DATE_FILTERING = True
 
+# Translation settings
 TRANSLATION_SOURCE_LANGUAGE = "en"
 TRANSLATION_TARGET_LANGUAGE = "zh-cn"
 TRANSLATION_MAX_RETRIES = 3
@@ -11,12 +13,14 @@ TRANSLATION_RETRY_SLEEP_SECONDS = 1.0
 TRANSLATION_RATE_LIMIT_SECONDS = 0.5
 TRANSLATION_FAILURE_TOKEN = "TRANSLATION_FAILED"
 
+# Common suffixes to remove from phytochemical names
 SUFFIXES_TO_REMOVE = [
     " extract", " extract standardized", " standardized extract", " powder", 
     " oil", " essential oil", " leaf extract", " root extract", " bark extract", 
     " purified", " concentrate"
 ]
 
+# CNKI query wrappers
 CNKI_WRAPPERS = {
     "REGARDING": "关于",
     "AND": "与",
@@ -24,6 +28,7 @@ CNKI_WRAPPERS = {
     "RESEARCH": "的研究",
 }
 
+# Default signaling pathways
 PATHWAYS = [
     "PI3K/Akt信号通路",
     "MAPK信号通路",
@@ -52,7 +57,11 @@ PATHWAYS = [
     "RAS信号通路",
 ]
 
+# CNKI search settings
 CNKI_MAX_PAGES = 2
 CNKI_TIMEOUT_SECONDS = 20
+
+# Output files
 OUTPUT_TRANSLATIONS_FILE = "phytochemicals.json"
-OUTPUT_RESULTS_FILE = "cnki_search_results.json"
+OUTPUT_RESULTS_FILE = "ckni_search_results.json"
+
