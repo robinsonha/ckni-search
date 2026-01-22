@@ -9,8 +9,7 @@ setup(
     package_dir={"": "src"},
     install_requires=[
         "googletrans==4.0.0-rc1",
-        "pandas",
-        "MagicCNKI"
+        "pandas"
     ],
     entry_points={
         "console_scripts": [
