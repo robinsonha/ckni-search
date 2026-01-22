@@ -1,5 +1,6 @@
 # ckni-search
-Search the CKNI database for drug-pathway association evidence and return EN papers
+Allows API search of CNKI which is a multilingual portal to the largest Chinese academic literature database, searches the CKNI database for drug-pathway association evidence and returns papers in English- the API is currently in Chinese only
+We use the google translate API to translate pathway names of interest and phytopharmaceuticals
 
 **Setup**
 ```
