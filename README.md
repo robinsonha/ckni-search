@@ -7,7 +7,5 @@ pip install httpx beautifulsoup4 pydantic
 ```
 **Example usage**
 ```
-from phytocnki import run_pipeline
-cnki = CNKISearch()
-papers = cnki.search("人工智能")
+python -m ckni_search.main --start_date 2020-01-01 --end_date 2023-12-31
 ```
