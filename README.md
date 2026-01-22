@@ -11,8 +11,22 @@ pip install -e .
 ```
 **Example usage**
 ```
-python -m ckni_search.main --start_date 2020-01-01 --end_date 2023-12-31 \
-    --drugs Curcumin Resveratrol "Sodium Phenyl Butyrate"
+from ckni_search.translator import PhytochemicalTranslator
+from ckni_search.cnki_search import generate_cnki_queries
+
+drugs = ["Curcumin", "Resveratrol", "Quercetin"]
+
+translator = PhytochemicalTranslator()
+phytochemicals_data = translator.process_list(drugs)
+
+queries = generate_cnki_queries(
+    phytochemicals=phytochemicals_data,
+    start_date="2020-01-01",
+    end_date="2023-12-31"
+)
+
+for q in queries[:5]:
+    print(q)
 ```
 --end_date is optional; defaults to today.
 
