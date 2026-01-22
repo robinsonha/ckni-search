@@ -1,42 +1,27 @@
 from pprint import pprint
 from .config import CNKI_WRAPPERS, PATHWAYS, CNKI_MAX_PAGES
 
-def generate_cnki_queries(phytochemicals, pathways=PATHWAYS, start_date=None, end_date=None):
-    queries = []
-    for phytochem in phytochemicals:
-        for pathway in pathways:
-            chi_query = f"{CNKI_WRAPPERS['REGARDING']}{phytochem['chinese']}" \
-                        f"{CNKI_WRAPPERS['AND']}{pathway}" \
-                        f"{CNKI_WRAPPERS['PATHWAY_IN']}{CNKI_WRAPPERS['RESEARCH']}"
-            queries.append({
-                "phytochemical_english": phytochem["name"],
-                "phytochemical_chinese": phytochem["chinese"],
-                "pathway": pathway,
-                "query": chi_query,
-                "start_date": start_date,
-                "end_date": end_date
-            })
-    return queries
+from .cnki_scraper import search_cnki
+from .config import CNKI_MAX_PAGES
 
-def search_cnki_for_queries(queries, max_pages=CNKI_MAX_PAGES):
-    from MagicCNKI import MagicCNKI
-    mc = MagicCNKI()
-    all_results = []
-    for query_info in queries:
-        try:
-            results = list(mc.search(query=query_info['query'], start=max_pages))
-            for result in results:
-                result.update({
-                    "agent": query_info['phytochemical_english'],
-                    "agent_chinese": query_info['phytochemical_chinese'],
-                    "pathway": query_info['pathway'],
-                    "search_query": query_info['query'],
-                    "paper_url": result.get('url', ''),
-                    "cnki_id": {}
-                })
-                all_results.append(result)
-                pprint(result)
-        except Exception as e:
-            print(f"Error searching CNKI: {e}")
-            continue
-    return all_results
+def run_cnki_pipeline(phytochemicals, start_date=None, end_date=None, output_file=OUTPUT_RESULTS_FILE):
+    queries = generate_cnki_queries(phytochemicals, start_date, end_date)
+
+    all_search_results = []
+    for q in queries:
+        results = search_cnki(q["query"], max_pages=CNKI_MAX_PAGES)
+        for r in results:
+            r.update({
+                "phytochemical": q["phytochemical_english"],
+                "chinese": q["phytochemical_chinese"],
+                "pathway": q["pathway"],
+                "search_query": q["query"]
+            })
+            all_search_results.append(r)
+
+    # always write final results
+    with open(output_file, "w", encoding="utf-8") as f:
+        json.dump(all_search_results, f, ensure_ascii=False, indent=2)
+
+    print(f"CNKI pipeline completed. Results saved to {output_file}")
+    return all_search_results
