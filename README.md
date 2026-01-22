@@ -3,8 +3,11 @@ Allows API search of CNKI which is a multilingual portal to the largest Chinese 
 We use the google translate API to translate pathway names of interest and phytopharmaceuticals
 
 **Setup**
-```
-pip install httpx beautifulsoup4 pydantic
+```bash
+python -m venv venv
+venv\Scripts\activate      # windows
+
+pip install -e .
 ```
 **Example usage**
 ```
