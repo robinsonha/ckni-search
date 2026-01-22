@@ -8,7 +8,8 @@ pip install httpx beautifulsoup4 pydantic
 ```
 **Example usage**
 ```
-python -m ckni_search.main --start_date 2020-01-01 --end_date 2023-12-31
+python -m ckni_search.main --start_date 2020-01-01 --end_date 2023-12-31 \
+    --drugs Curcumin Resveratrol "Sodium Phenyl Butyrate"
 ```
 --end_date is optional; defaults to today.
 
