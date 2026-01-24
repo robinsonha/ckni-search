@@ -2,13 +2,20 @@
 Allows API search of CNKI which is a multilingual portal to the largest Chinese academic literature database, searches the CKNI database for evidence of associations between a phytopharmaceutical and a specific gene pathway, to return links to the papers in English
 As the API is currently in Chinese only, we will use the google translate API to translate names of phytopharmaceuticals that we want to query into Chinese
 There is then a wrapper template to create a full query in Chinese
+This is part of Envita's work to look for drug-gene associations for precision cancer medicine
 
 ### Still to do
 
 This code has been drafted but I have not had time to test it and get it working, it likely needs major revision
+
 We know that mining the database was previously feasible, there is an old python package called magicCKNI that did this: https://github.com/1049451037/MagicCNKI
 magicCKNI no longer works which implies the page setup or field names changed
-I have looked into doing this with rvest and RSelenium in R, both seem deprecated or unsuitable (RSelenium only works with very old versions of Chrome and rvest will only scrape the start of html from pages) so we definitely need to use python
+
+Possibly what we want is now at https://oversea.cnki.net/ rather than at https://cnki.net/index/
+It may be that we need to use a VPN with Chinese positioning
+
+I have looked into webscraping with rvest and RSelenium in R, both seem deprecated or unsuitable (RSelenium only works with very old versions of Chrome and rvest will only scrape the start of html from pages) so we definitely need to use python
+
 The authors of the original magicCKNI package may be interested in helping to create an open source update, I have not yet reached out to them
 
 **Setup**
